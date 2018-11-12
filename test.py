@@ -38,7 +38,41 @@ df[df.population > 10][['country', 'square']]
 df['density'] = df['population'] / df['square'] * 1000000
 df.drop(['density'], axis='columns')
 
-df = pd.read_csv('titanic.csv', sep=',')
+
 df.index.name = 'Country Code'
 
 df  = df.rename(columns={'Country Code': 'country_code'})
+
+
+df = pd.read_csv('titanic.csv', sep=',')
+df.shape
+df.columns
+
+df.iloc[:4]
+df.groupby(['Sex', 'Survived'])['PassengerID'].count()
+df.groupby(['PClass', 'Survived'])['PassengerID'].count()
+titanic_df = pd.read_csv('titanic.csv')
+pvt = titanic_df.pivot_table(index=['Sex'], columns=['PClass'], values='Name', aggfunc='count')
+pvt.loc['female', ['1st', '2nd', '3rd']]
+
+df = pd.read_csv('apple.csv', index_col='Date', parse_dates=True)
+df = df.sort_index()
+print(df.info())
+df.loc['2012-Feb', 'Close'].mean()
+df.loc['2012-Feb':'2015-Feb', 'Close'].mean()
+df[:4]
+df.resample('W')['Close'].mean()
+import matplotlib
+montly_average = df.resample('M')['Close'].mean()
+montly_average.columns = ['Date', 'Average Price']
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('apple.csv', index_col='Date', parse_dates=True)
+df = df.sort_index()
+
+new_sample_df = df.loc['2012-Feb':'2017-Feb', ['Close']]
+new_sample_df.plot()
+plt.show()
+
